@@ -117,8 +117,8 @@
             border: 1px solid var(--line);
             box-shadow: 0 30px 60px rgba(17, 17, 17, 0.1);
             padding: clamp(28px, 5vw, 72px);
-            width: 100%;
-            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -126,7 +126,8 @@
         }
 
         /* Images are never scaled beyond their natural pixel size — only ever
-           scaled down to fit, preventing upscale pixelation. */
+           scaled down to fit, preventing upscale pixelation. The card shrinks
+           to the image so there's no empty white space around landscape art. */
         .image-card img {
             display: block;
             width: auto;
@@ -202,32 +203,58 @@
 
         @media (max-width: 768px) {
             :root {
-                --nav-h: 60px;
-                --side: 32px;
-                --label-side: 44px;
+                --nav-h: 0px;
+                --side: 14px;
+                --label-side: 20px;
             }
 
             .slide-label {
-                padding: 22px var(--label-side) 12px;
+                padding: 18px var(--label-side) 10px;
                 font-size: 10px;
             }
 
             .slide-image {
-                padding-bottom: calc(var(--nav-h) + 16px);
+                padding: 0 52px;
+                padding-bottom: 44px;
             }
 
             .image-card {
                 border-radius: 16px;
+                padding: 14px;
             }
 
             .nav-container {
-                gap: 16px;
+                position: fixed;
+                inset: 0;
+                height: auto;
+                pointer-events: none;
+                background: transparent;
             }
 
             .nav-btn {
-                width: 34px;
-                height: 34px;
+                position: fixed;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 36px;
+                height: 36px;
                 font-size: 15px;
+                pointer-events: auto;
+                background: rgba(244, 243, 240, 0.7);
+                backdrop-filter: blur(4px);
+                z-index: 10;
+            }
+
+            .nav-btn.prev { left: 8px; }
+            .nav-btn.next { right: 8px; }
+
+            .dots-container {
+                position: fixed;
+                bottom: 16px;
+                left: 50%;
+                transform: translateX(-50%);
+                pointer-events: auto;
+                gap: 8px;
+                z-index: 10;
             }
 
             .dot.active {
@@ -237,21 +264,39 @@
 
         @media (max-width: 420px) {
             :root {
-                --side: 22px;
-                --label-side: 26px;
+                --side: 10px;
+                --label-side: 16px;
             }
 
             .slide-label {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 4px;
-                padding: 18px var(--label-side) 10px;
+                padding: 14px var(--label-side) 8px;
             }
 
             .slide-label .count {
                 align-self: flex-end;
-                margin-top: -22px;
+                margin-top: -20px;
             }
+
+            .slide-image {
+                padding: 0 46px;
+                padding-bottom: 40px;
+            }
+
+            .image-card {
+                padding: 10px;
+            }
+
+            .nav-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+
+            .nav-btn.prev { left: 6px; }
+            .nav-btn.next { right: 6px; }
         }
 
         @media (max-height: 480px) and (orientation: landscape) {
@@ -265,15 +310,111 @@
                 padding: 14px var(--label-side) 8px;
             }
 
+            /* restore bottom-centered nav bar in landscape */
+            .nav-container {
+                position: fixed;
+                inset: auto 0 0 0;
+                height: var(--nav-h);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 16px;
+                pointer-events: auto;
+            }
+
             .nav-btn {
+                position: static;
+                transform: none;
                 width: 30px;
                 height: 30px;
                 font-size: 14px;
+                background: transparent;
+                backdrop-filter: none;
             }
+
+            .slide-image {
+                padding: 0 var(--side);
+                padding-bottom: calc(var(--nav-h) + 12px);
+            }
+
+            .dots-container {
+                position: static;
+                transform: none;
+            }
+        }
+
+        /* "Rotate your device" overlay — mobile portrait only */
+        .rotate-hint {
+            display: none;
+        }
+
+        @media (max-width: 768px) and (orientation: portrait) {
+            .rotate-hint {
+                display: flex;
+                position: fixed;
+                inset: 0;
+                z-index: 1000;
+                background: var(--bg);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 26px;
+                padding: 40px;
+                text-align: center;
+            }
+
+            .rotate-hint .phone {
+                width: 54px;
+                height: 86px;
+                border: 2.5px solid var(--ink);
+                border-radius: 12px;
+                position: relative;
+                animation: tilt 2.4s ease-in-out infinite;
+            }
+
+            .rotate-hint .phone::after {
+                content: "";
+                position: absolute;
+                bottom: 7px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 18px;
+                height: 2.5px;
+                border-radius: 2px;
+                background: var(--ink);
+            }
+
+            .rotate-hint .label {
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                font-size: 13px;
+                color: var(--ink);
+                line-height: 1.5;
+            }
+
+            .rotate-hint .eyebrow-tag {
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                font-size: 10px;
+                color: rgba(17, 17, 17, 0.45);
+            }
+        }
+
+        @keyframes tilt {
+            0%, 40%   { transform: rotate(0deg); }
+            60%, 100% { transform: rotate(-90deg); }
         }
     </style>
 </head>
 <body>
+    <div class="rotate-hint" role="status" aria-live="polite">
+        <div class="phone"></div>
+        <div class="label">Rode o dispositivo</div>
+        <div class="eyebrow-tag">The Purple Fridays</div>
+    </div>
+
     <div class="deck">
         <div class="slide active" data-slide="0">
             <div class="slide-label">
