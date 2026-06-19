@@ -117,8 +117,8 @@
             border: 1px solid var(--line);
             box-shadow: 0 30px 60px rgba(17, 17, 17, 0.1);
             padding: clamp(28px, 5vw, 72px);
-            max-width: 100%;
-            max-height: 100%;
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -126,8 +126,7 @@
         }
 
         /* Images are never scaled beyond their natural pixel size — only ever
-           scaled down to fit, preventing upscale pixelation. The card shrinks
-           to the image so there's no empty white space around landscape art. */
+           scaled down to fit inside the card, never spilling past its edges. */
         .image-card img {
             display: block;
             width: auto;
@@ -301,45 +300,35 @@
 
         @media (max-height: 480px) and (orientation: landscape) {
             :root {
-                --nav-h: 52px;
-                --side: 40px;
+                --nav-h: 0px;
+                --side: 56px;
                 --label-side: 56px;
             }
 
             .slide-label {
-                padding: 14px var(--label-side) 8px;
+                padding: 12px var(--label-side) 6px;
             }
 
-            /* restore bottom-centered nav bar in landscape */
-            .nav-container {
-                position: fixed;
-                inset: auto 0 0 0;
-                height: var(--nav-h);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 16px;
-                pointer-events: auto;
-            }
-
+            /* arrows stay on the sides; no footer bar so the card gets the height */
             .nav-btn {
-                position: static;
-                transform: none;
-                width: 30px;
-                height: 30px;
+                width: 32px;
+                height: 32px;
                 font-size: 14px;
-                background: transparent;
-                backdrop-filter: none;
             }
+
+            .nav-btn.prev { left: 10px; }
+            .nav-btn.next { right: 10px; }
 
             .slide-image {
-                padding: 0 var(--side);
-                padding-bottom: calc(var(--nav-h) + 12px);
+                padding: 0 56px 30px;
+            }
+
+            .image-card {
+                padding: 16px;
             }
 
             .dots-container {
-                position: static;
-                transform: none;
+                bottom: 10px;
             }
         }
 
