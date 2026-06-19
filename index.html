@@ -116,7 +116,7 @@
             border-radius: 20px;
             border: 1px solid var(--line);
             box-shadow: 0 30px 60px rgba(17, 17, 17, 0.1);
-            padding: clamp(16px, 3vw, 36px);
+            padding: clamp(28px, 5vw, 72px);
             width: 100%;
             height: 100%;
             display: flex;
@@ -277,8 +277,20 @@
     <div class="deck">
         <div class="slide active" data-slide="0">
             <div class="slide-label">
+                <div><span class="eyebrow">THE PURPLE FRIDAYS<span class="slash">/</span></span>INTRO</div>
+                <div class="count">01 / 05</div>
+            </div>
+            <div class="slide-image">
+                <div class="image-card">
+                    <img src="intro.png" alt="Intro — Music, connections, culture on the edge of the Atlantic" width="1920" height="1080">
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-slide="1">
+            <div class="slide-label">
                 <div><span class="eyebrow">THE PURPLE FRIDAYS<span class="slash">/</span></span>LOGO</div>
-                <div class="count">01 / 04</div>
+                <div class="count">02 / 05</div>
             </div>
             <div class="slide-image">
                 <div class="image-card">
@@ -287,10 +299,10 @@
             </div>
         </div>
 
-        <div class="slide" data-slide="1">
+        <div class="slide" data-slide="2">
             <div class="slide-label">
                 <div><span class="eyebrow">THE PURPLE FRIDAYS<span class="slash">/</span></span>ELEMENTS</div>
-                <div class="count">02 / 04</div>
+                <div class="count">03 / 05</div>
             </div>
             <div class="slide-image">
                 <div class="image-card">
@@ -299,10 +311,10 @@
             </div>
         </div>
 
-        <div class="slide" data-slide="2">
+        <div class="slide" data-slide="3">
             <div class="slide-label">
                 <div><span class="eyebrow">THE PURPLE FRIDAYS<span class="slash">/</span></span>POST</div>
-                <div class="count">03 / 04</div>
+                <div class="count">04 / 05</div>
             </div>
             <div class="slide-image">
                 <div class="image-card">
@@ -311,10 +323,10 @@
             </div>
         </div>
 
-        <div class="slide" data-slide="3">
+        <div class="slide" data-slide="4">
             <div class="slide-label">
                 <div><span class="eyebrow">THE PURPLE FRIDAYS<span class="slash">/</span></span>COVER EVENT</div>
-                <div class="count">04 / 04</div>
+                <div class="count">05 / 05</div>
             </div>
             <div class="slide-image">
                 <div class="image-card">
@@ -331,6 +343,7 @@
             <div class="dot" data-index="1"></div>
             <div class="dot" data-index="2"></div>
             <div class="dot" data-index="3"></div>
+            <div class="dot" data-index="4"></div>
         </div>
         <button class="nav-btn next" aria-label="Seguinte">›</button>
     </div>
@@ -339,7 +352,7 @@
         class Deck {
             constructor() {
                 this.current = 0;
-                this.total = 4;
+                this.total = 5;
                 this.slides = document.querySelectorAll('.slide');
                 this.dots = document.querySelectorAll('.dot');
                 document.querySelector('.nav-btn.prev').addEventListener('click', () => this.prev());
